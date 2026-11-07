@@ -1,0 +1,22 @@
+{
+  "name": "@chethandvg/audio-safety-math",
+  "version": "0.1.0",
+  "description": "Decibel arithmetic, noise-dose rules and loudness metering in Rust, Python and WebAssembly, with Lean 4 proofs of the dose rule.",
+  "license": "Apache-2.0",
+  "author": "Chethan Dandebala Venkatarama",
+  "homepage": "https://chethandvg.github.io/frequencies-of-life/repos/audio-safety-math/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chethandvg/audio-safety-math.git",
+    "directory": "bindings/wasm"
+  },
+  "keywords": ["audio", "loudness", "decibel", "hearing-safety", "rust"],
+  "private": true,
+  "scripts": {
+    "build": "cargo build --release --target wasm32-unknown-unknown && wasm-bindgen --target nodejs --out-dir pkg/node target/wasm32-unknown-unknown/release/audio_safety_math_wasm.wasm && wasm-bindgen --target web --out-dir pkg/web target/wasm32-unknown-unknown/release/audio_safety_math_wasm.wasm",
+    "test": "node --test \"tests/*.test.mjs\""
+  },
+  "devDependencies": {
+    "golden-vectors": "github:chethandvg/evidence-kernel#v0.1.0"
+  }
+}

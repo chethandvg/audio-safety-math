@@ -1,0 +1,37 @@
+{
+ "schema": "golden-vectors@1",
+ "description": "Allowed time, daily dose and TWA by the exchange-rate rule (mpmath, 50 digits).",
+ "tolerance": {
+  "rel": 1e-12,
+  "abs": 1e-12
+ },
+ "cases": [
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [85.0, 85.0, 3.0, 8.0], "expected": 8.0, "note": "NIOSH: 8 h at the criterion level"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [88.0, 85.0, 3.0, 8.0], "expected": 4.0, "note": "4 h"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [94.0, 85.0, 3.0, 8.0], "expected": 1.0, "note": "1 h"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [100.0, 85.0, 3.0, 8.0], "expected": 0.25, "note": "15 min"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [82.0, 85.0, 3.0, 8.0], "expected": 16.0, "note": "16 h"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [87.3, 85.0, 3.0, 8.0], "expected": 4.702191625134438},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [90.0, 90.0, 5.0, 8.0], "expected": 8.0, "note": "OSHA parameters: 8 h"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [95.0, 90.0, 5.0, 8.0], "expected": 4.0, "note": "4 h"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [105.0, 90.0, 5.0, 8.0], "expected": 1.0, "note": "1 h"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [92.5, 90.0, 5.0, 8.0], "expected": 5.656854249492381},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [80.0, 80.0, 3.0, 40.0], "expected": 40.0, "note": "a 40-hour weekly allowance at 80 dB"},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "allowed_time", "args": [90.0, 80.0, 3.0, 40.0], "expected": 3.968502629920499},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[88.0, 85.0], [2.0, 4.0], 85.0, 3.0, 8.0], "expected": 100.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[95.0, 90.0, 85.0, 80.0], [1.0, 2.0, 3.0, 2.0], 85.0, 3.0, 8.0], "expected": 250.73666414974025},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[100.0], [0.25], 85.0, 3.0, 8.0], "expected": 100.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[92.0, 97.5], [3.0, 0.5], 90.0, 5.0, 8.0], "expected": 67.15921618364722},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[84.2, 101.3, 70.0], [5.5, 0.1, 2.4], 85.0, 3.0, 8.0], "expected": 112.09910320654427},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[], [], 85.0, 3.0, 8.0], "expected": 0.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[5000.0, 85.0], [0.0, 8.0], 85.0, 3.0, 8.0], "expected": 100.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "noise_dose", "args": [[3160.0], [1e-10], 85.0, 3.0, 8.0], "expected": 4.49423283715579e+299},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "twa_from_dose", "args": [100.0, 85.0, 3.0], "expected": 85.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "twa_from_dose", "args": [200.0, 85.0, 3.0], "expected": 88.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "twa_from_dose", "args": [50.0, 85.0, 3.0], "expected": 82.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "twa_from_dose", "args": [400.0, 85.0, 3.0], "expected": 91.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "twa_from_dose", "args": [137.0, 85.0, 3.0], "expected": 86.3625276795574},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "twa_from_dose", "args": [200.0, 90.0, 5.0], "expected": 95.0},
+  {"claim": "safety:DOSE-MATCHES-REFERENCE", "fn": "twa_from_dose", "args": [3.2, 90.0, 5.0], "expected": 65.17107857668957}
+ ]
+}

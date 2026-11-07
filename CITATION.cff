@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using these metadata."
+type: software
+title: "Audio safety math"
+abstract: "Decibel arithmetic, noise-dose rules and loudness metering in Rust, Python and WebAssembly, with Lean 4 proofs of the dose rule."
+authors:
+  - given-names: "Chethan"
+    family-names: "Dandebala Venkatarama"
+    alias: "chethandvg"
+    orcid: "https://orcid.org/0009-0006-6099-343X"
+repository-code: "https://github.com/chethandvg/audio-safety-math"
+url: "https://chethandvg.github.io/frequencies-of-life/repos/audio-safety-math/"
+license: Apache-2.0
+version: 0.1.0
+date-released: "2026-11-07"
+keywords:
+  - audio
+  - loudness
+  - decibel
+  - hearing-safety
+  - rust

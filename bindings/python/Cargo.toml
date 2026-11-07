@@ -1,0 +1,19 @@
+[package]
+name = "audio-safety-math-py"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+publish = false
+
+[lib]
+name = "audio_safety_math"
+crate-type = ["cdylib"]
+
+[dependencies]
+audio_safety_math_rs = { package = "audio-safety-math", path = "../.." }
+pyo3 = { version = "0.30.1", features = ["abi3-py310"] }
+# rust-numpy, the PyO3 project's NumPy bindings (BSD-2-Clause): signals come back as numpy arrays.
+numpy = "0.30.0"
+
+# A separate workspace, so the core crate's `cargo test` never links Python.
+[workspace]

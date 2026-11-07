@@ -1,0 +1,29 @@
+[package]
+name = "audio-safety-math"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Decibel arithmetic, noise-dose rules and loudness metering in Rust, Python and WebAssembly, with Lean 4 proofs of the dose rule."
+license = "Apache-2.0"
+authors = ["Chethan Dandebala Venkatarama"]
+repository = "https://github.com/chethandvg/audio-safety-math"
+homepage = "https://chethandvg.github.io/frequencies-of-life/repos/audio-safety-math/"
+readme = "README.md"
+keywords = ["audio", "loudness", "decibel", "hearing-safety", "rust"]
+categories = ["mathematics", "science"]
+include = ["/src", "/README.md", "/LICENSE", "/NOTICE", "/CHANGELOG.md"]
+
+[dependencies]
+# normalize reuses signal-core's zero-phase high-pass, as lifesound.py did.
+signal-core = { git = "https://github.com/chethandvg/signal-core", tag = "v0.1.0" }
+# Local form: signal-core = { path = "../signal-core" }
+
+[dev-dependencies]
+golden-vectors = { git = "https://github.com/chethandvg/evidence-kernel", tag = "v0.1.0" }
+# Local form: golden-vectors = { path = "../evidence-kernel/crates/golden-vectors" }
+# float_roundtrip parses every vector number exactly, so tight tolerances are reliable.
+serde_json = { version = "1.0.154", features = ["float_roundtrip"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"

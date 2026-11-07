@@ -1,0 +1,266 @@
+{
+ "description": "EBU Tech 3341 test cases (https://tech.ebu.ch/docs/tech/tech3341.pdf): stereo or 5.0 sines of 1 kHz at 48 kHz, with the published expected loudness and tolerance (+-0.1 LU), and pyloudnorm's integrated loudness of the same signals (DeMan filters, which reproduce the BS.1770 coefficients at 48 kHz).",
+ "sr": 48000,
+ "hz": 1000.0,
+ "cases": [
+  {
+   "case": 1,
+   "measure": "integrated",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     20.0,
+     -23.0
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1,
+   "pyloudnorm": -22.993296873986754
+  },
+  {
+   "case": 1,
+   "measure": "momentary",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     20.0,
+     -23.0
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1
+  },
+  {
+   "case": 1,
+   "measure": "short_term",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     20.0,
+     -23.0
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1
+  },
+  {
+   "case": 2,
+   "measure": "integrated",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     20.0,
+     -33.0
+    ]
+   ],
+   "expected": -33.0,
+   "tolerance": 0.1,
+   "pyloudnorm": -32.99329687398676
+  },
+  {
+   "case": 2,
+   "measure": "momentary",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     20.0,
+     -33.0
+    ]
+   ],
+   "expected": -33.0,
+   "tolerance": 0.1
+  },
+  {
+   "case": 2,
+   "measure": "short_term",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     20.0,
+     -33.0
+    ]
+   ],
+   "expected": -33.0,
+   "tolerance": 0.1
+  },
+  {
+   "case": 3,
+   "measure": "integrated",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     10.0,
+     -36.0
+    ],
+    [
+     60.0,
+     -23.0
+    ],
+    [
+     10.0,
+     -36.0
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1,
+   "pyloudnorm": -23.013868619685798
+  },
+  {
+   "case": 4,
+   "measure": "integrated",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     10.0,
+     -72.0
+    ],
+    [
+     10.0,
+     -36.0
+    ],
+    [
+     60.0,
+     -23.0
+    ],
+    [
+     10.0,
+     -36.0
+    ],
+    [
+     10.0,
+     -72.0
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1,
+   "pyloudnorm": -23.013868619685798
+  },
+  {
+   "case": 5,
+   "measure": "integrated",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     20.0,
+     -26.0
+    ],
+    [
+     20.1,
+     -20.0
+    ],
+    [
+     20.0,
+     -26.0
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1,
+   "pyloudnorm": -22.978657430571666
+  },
+  {
+   "case": 6,
+   "measure": "integrated",
+   "weights": [
+    1.0,
+    1.0,
+    1.0,
+    1.41,
+    1.41
+   ],
+   "segments": [
+    [
+     20.0,
+     [
+      -28.0,
+      -28.0,
+      -24.0,
+      -30.0,
+      -30.0
+     ]
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1,
+   "pyloudnorm": -23.016271478287965
+  },
+  {
+   "case": 9,
+   "measure": "short_term",
+   "weights": [
+    1.0,
+    1.0
+   ],
+   "segments": [
+    [
+     1.34,
+     -20.0
+    ],
+    [
+     1.66,
+     -30.0
+    ],
+    [
+     1.34,
+     -20.0
+    ],
+    [
+     1.66,
+     -30.0
+    ],
+    [
+     1.34,
+     -20.0
+    ],
+    [
+     1.66,
+     -30.0
+    ],
+    [
+     1.34,
+     -20.0
+    ],
+    [
+     1.66,
+     -30.0
+    ],
+    [
+     1.34,
+     -20.0
+    ],
+    [
+     1.66,
+     -30.0
+    ]
+   ],
+   "expected": -23.0,
+   "tolerance": 0.1
+  }
+ ]
+}

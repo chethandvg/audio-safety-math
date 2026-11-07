@@ -1,0 +1,15 @@
+name = "audio_safety_math"
+version = "0.1.0"
+defaultTargets = ["AudioSafetyMath"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.35.0"
+
+[[lean_lib]]
+name = "AudioSafetyMath"

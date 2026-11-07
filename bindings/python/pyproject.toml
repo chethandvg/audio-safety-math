@@ -1,0 +1,26 @@
+[build-system]
+requires = ["maturin>=1.16,<2"]
+build-backend = "maturin"
+
+[project]
+name = "audio-safety-math"
+version = "0.1.0"
+description = "Decibel arithmetic, noise-dose rules and loudness metering in Rust, Python and WebAssembly, with Lean 4 proofs of the dose rule."
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "Chethan Dandebala Venkatarama" }]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.22"]
+keywords = ["audio", "loudness", "decibel", "hearing-safety", "rust"]
+classifiers = [
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+[project.urls]
+Homepage = "https://chethandvg.github.io/frequencies-of-life/repos/audio-safety-math/"
+Repository = "https://github.com/chethandvg/audio-safety-math"
+
+[tool.maturin]
+module-name = "audio_safety_math"

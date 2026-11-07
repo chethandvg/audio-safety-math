@@ -1,0 +1,109 @@
+# Claims ledger for audio-safety-math (schema evidence-kernel/claims@1, https://github.com/chethandvg/evidence-kernel).
+# Levels: P proved in Lean · V verified numerics · T tested · R referenced (DOI/PMID) · M model assumption.
+schema: evidence-kernel/claims@1
+repo: audio-safety-math
+prefix: safety
+claims:
+  - id: safety:DB-PRODUCT
+    version: 1.0.0
+    level: P
+    statement: "For amplitude ratios a, b > 0, 20·log₁₀(a·b) = 20·log₁₀ a + 20·log₁₀ b: gains in a chain multiply, so their decibels add."
+    proof: proofs/AudioSafetyMath/Decibel.lean#AudioSafetyMath.amplitudeDb_mul
+  - id: safety:INCOHERENT-SUM-BOUNDS
+    version: 1.0.0
+    level: P
+    statement: "For n ≥ 1 levels Lᵢ, max Lᵢ ≤ 10·log₁₀ Σ 10^(Lᵢ/10) ≤ max Lᵢ + 10·log₁₀ n: unrelated sources together are at least as loud as the loudest one and at most 10·log₁₀ n dB louder."
+    proof: proofs/AudioSafetyMath/Decibel.lean#AudioSafetyMath.sumDb_bounds
+  - id: safety:EXCHANGE-RATE
+    version: 1.0.0
+    level: P
+    statement: "With allowed time T(L) = T_c / 2^((L − L₀)/q) for criterion level L₀, exchange rate q ≠ 0 and criterion duration T_c, T(L + q) = T(L)/2, so a dose of t hours at L equals a dose of t/2 hours at L + q."
+    proof: proofs/AudioSafetyMath/Dose.lean#AudioSafetyMath.dose_half_time_add_exchange
+    notes: "The halving of the allowed time is AudioSafetyMath.allowedTime_add_exchange, which this proof uses; AudioSafetyMath.allowedTime_add_mul gives T(L + k·q) = T(L)/2^k for every real k."
+  - id: safety:THREE-DB-IS-ABOUT-DOUBLING
+    version: 1.0.0
+    level: P
+    statement: "3.0102 < 10·log₁₀ 2 < 3.0103: doubling the power adds just over 3 dB, so a 3 dB exchange rate approximates the equal-energy rule."
+    proof: proofs/AudioSafetyMath/Decibel.lean#AudioSafetyMath.three_db_about_doubling
+    notes: "The proof reduces the bounds to the whole-number inequalities 10^30102 < 2^100000 < 10^30103, which the Lean kernel checks with arbitrary-precision arithmetic."
+  - id: safety:TWA-INVERTS-DOSE
+    version: 1.0.0
+    level: P
+    statement: "A whole criterion duration T_c ≠ 0 at a steady level L is a dose of 100·2^((L − L₀)/q) percent, and the time-weighted average L₀ + q·log₂(D/100) of that dose is L again (q ≠ 0)."
+    proof: proofs/AudioSafetyMath/Dose.lean#AudioSafetyMath.twa_dose
+    depends_on: ["safety:EXCHANGE-RATE@1"]
+  - id: safety:NIOSH-REL
+    version: 1.0.0
+    level: R
+    statement: "The default dose parameters are the NIOSH recommended exposure limit for occupational noise: 85 dBA as an 8-hour time-weighted average, with a 3 dB exchange rate (every 3 dB more halves the allowed time)."
+    value: {value: 85, unit: "dBA, 8-hour TWA"}
+    species: "Homo sapiens (workers)"
+    method: "Recommended exposure limit in a NIOSH criteria document (US federal guidance), checked against the document's text (Chapter 1, Section 1.1), used as the default parameters of allowed_time and noise_dose; not re-derived here."
+    sources:
+      - cite: "NIOSH 1998, Criteria for a recommended standard: occupational noise exposure, revised criteria 1998, DHHS (NIOSH) publication 98-126, Chapter 1, Section 1.1"
+        doi: "10.26616/NIOSHPUB98126"
+        url: "https://www.cdc.gov/niosh/docs/98-126/pdfs/CriteriaDoc_98-126.pdf"
+    notes: "A reference value, not medical advice. The three values were checked against the document's text on 7 Nov 2026. Section 1.1 states 'The REL is 85 decibels, A-weighted, as an 8-hr time-weighted average (85 dBA as an 8-hr TWA)' and that for an 8-hr work shift the REL is 'a TWA of 85 dBA using a 3-decibel (dB) exchange rate'; Chapter 2 adds that NIOSH 'now recommends the 3-dB exchange rate' in place of its 1972 5-dB rate. The OSHA rule of 90 dBA with a 5 dB exchange rate is another parameter set of the same formula. The WHO-ITU safe-listening standard (WHO 2019, https://www.who.int/publications/i/item/9789241515276) sets reference exposures of 80 dB for 40 hours a week for adults and 75 dB for 40 hours a week for children; it has no DOI, so it is cited in the README rather than as a claim here."
+  - id: safety:DB-CONVERSIONS
+    version: 1.0.0
+    level: T
+    statement: "amplitude_to_db, db_to_amplitude, power_to_db and db_to_power match the formulas evaluated in 50-digit arithmetic within 1e-12, decibels of products add within 1e-12 dB in the code, conversions round-trip within 1e-13 relative, and 10·log₁₀ 2 in the code lies between 3.0102 and 3.0103."
+    depends_on: ["safety:DB-PRODUCT@1", "safety:THREE-DB-IS-ABOUT-DOUBLING@1"]
+    tests: [vectors/decibels.json, tests/properties.rs, src/db.rs]
+  - id: safety:LEVEL-SUMS
+    version: 1.0.0
+    level: T
+    statement: "sum_incoherent_db, energetic_mean_db and leq match the formulas evaluated in 50-digit arithmetic within 1e-12; in the floating-point code the incoherent sum always lies within the proved bounds, and levels from −5000 to 7000 dB give finite results, as does leq of a segment at 6000 dB lasting 10⁻³³⁰ of the longest (which matches 50-digit arithmetic), because each sum is factored around its largest term, with the durations entering as logarithms."
+    depends_on: ["safety:INCOHERENT-SUM-BOUNDS@1"]
+    tests: [vectors/decibels.json, tests/properties.rs, src/db.rs]
+  - id: safety:LEVELS-MATCH-REFERENCE
+    version: 1.0.0
+    level: T
+    statement: "rms_dbfs and normalize (on signal-core's zero-phase 12 Hz high-pass) match lifesound.py's rms_dbfs and normalize, run in numpy with lifesound.py's own box_lowpass and highpass, within 1e-12, and peak_dbfs, and rms_dbfs of samples whose squares underflow or overflow an f64, match 20·log₁₀ max|x| and 20·log₁₀ √(mean(x²)) in 50-digit arithmetic; rms_dbfs no longer adds 1e-12 before the logarithm, so silence is an error rather than −240 dBFS. normalize reaches the RMS target unless the peak ceiling binds, and then puts the peak at the ceiling; a signal left with only rounding residue after the high-pass (a constant, exact in binary or not) is an error rather than noise scaled to the target, and its gain overflows only when the result is too large for an f64 (not for a ceiling that does not bind, nor to lift subnormal samples); samples so large that the high-pass's running sums overflow, which takes a peak of at least about 1.8 × 10³⁰⁸/(len(x) + L) for the box length L, are an error on x, even when the result would fit."
+    tests: [vectors/levels.json, tests/properties.rs, src/db.rs]
+  - id: safety:DOSE-MATCHES-REFERENCE
+    version: 1.0.0
+    level: T
+    statement: "allowed_time, noise_dose and twa_from_dose match the formulas evaluated in 50-digit arithmetic within 1e-12 (with the NIOSH parameters, 88 dBA is allowed exactly 4 h and 100 dBA 15 min); in the floating-point code one exchange rate more halves the allowed time and keeps the dose of half the time within 1e-13 relative, and the TWA of a full day at a steady level returns that level within 1e-12 dB; the shares of the dose are summed as powers of two around the largest, so 10⁻¹⁰ hours at 3160 dBA, whose 2^((L − L₀)/q) overflows an f64, still gives its dose of 4.49 × 10²⁹⁹ %."
+    depends_on: ["safety:EXCHANGE-RATE@1", "safety:TWA-INVERTS-DOSE@1", "safety:NIOSH-REL@1"]
+    tests: [vectors/dose.json, tests/properties.rs, src/dose.rs]
+  - id: safety:K-WEIGHTING-COEFFICIENTS
+    version: 1.0.0
+    level: T
+    statement: "k_weighting builds both K-weighting stages from fixed analogue prototypes by the bilinear transform prewarped at each stage's corner frequency; at 48 kHz it reproduces the coefficients published in ITU-R BS.1770 within 1e-14, at other rates it matches the same construction in 50-digit arithmetic within 1e-12 (1e-9 at the lowest rate, 3364 Hz), and below 6 kHz its response at 44.1, 96 and 192 kHz stays within 0.01 dB of the 48 kHz filter."
+    tests: [vectors/filters.json, tests/properties.rs, src/loudness.rs]
+    notes: "Recommendation ITU-R BS.1770, 'Algorithms to measure audio programme loudness and true-peak audio level', https://www.itu.int/rec/R-REC-BS.1770 (the revision number and date of the current edition were not checked against that page for this release). The standard publishes the filter at 48 kHz only. The prototypes are those coefficients mapped back through the bilinear transform (vectors/generate.py): a shelf at 1681.97 Hz (Q 0.70718, +4.00 dB above it) and a high-pass at 38.135 Hz (Q 0.50033), the same corner frequencies and Q as pyloudnorm 0.2.0's DeMan filters. The high-pass keeps its high-frequency gain of 1.004995 at every rate, where pyloudnorm's DeMan filters keep its numerator [1, −2, 1]; the two agree at 48 kHz only, and elsewhere differ by a nearly flat gain, measured as the largest response difference from 10 Hz to 20 kHz (or the Nyquist frequency): 0.004 dB at 44.1 kHz, 0.020 to 0.032 dB at 88.2 to 192 kHz, and more below 32 kHz (0.022 at 32, 0.051 at 22.05, 0.086 at 16 and 0.215 at 8 kHz)."
+  - id: safety:K-WEIGHT-FILTER
+    version: 1.0.0
+    level: T
+    statement: "k_weight filters each channel of an interleaved signal through both stages from rest and matches scipy.signal.lfilter with the reference coefficients within 1e-12."
+    depends_on: ["safety:K-WEIGHTING-COEFFICIENTS@1"]
+    tests: [vectors/filters.json]
+  - id: safety:LOUDNESS-MATCHES-PYLOUDNORM
+    version: 1.0.0
+    level: T
+    statement: "integrated_loudness and momentary_loudness match pyloudnorm 0.2.0's meter run with the reference K-weighting within 1e-9 LU, for mono, stereo and 5.0 signals and signals that exercise both gates; short_term_loudness and a 5.1 case with an LFE weight of 0 match a direct transcription of the BS.1770 formulas within 1e-9 LU; a gain of g adds 20·log₁₀ g LU and a copied channel adds 10·log₁₀ 2 within 1e-10."
+    depends_on: ["safety:K-WEIGHT-FILTER@1"]
+    tests: [vectors/loudness.json, tests/properties.rs, src/loudness.rs]
+    notes: "pyloudnorm (MIT) is used only to write the vectors. Its 3 s meter (overlap 1 − 1/30) computes block bounds one sample short, so the short-term reference is the transcription, which agrees with pyloudnorm's integrated and momentary values within 1e-11 LU."
+  - id: safety:EBU-3341
+    version: 1.0.0
+    level: T
+    statement: "On the EBU Tech 3341 test signals 1 to 6 and 9 (1 kHz sines at 48 kHz), integrated_loudness reads −22.993 (case 1), −32.993 (2), −23.014 (3 and 4), −22.979 (5) and −23.016 (6) LUFS, momentary and short-term loudness stay within 0.007 LU of −23 or −33 LUFS (cases 1 and 2) and short-term within 0.014 LU of −23 LUFS (case 9): all inside the published ±0.1 LU, and the integrated readings within 1e-6 LU of pyloudnorm's."
+    depends_on: ["safety:LOUDNESS-MATCHES-PYLOUDNORM@1"]
+    tests: [tests/ebu3341.rs, tests/ebu3341.json]
+    notes: "EBU Tech 3341, 'Loudness Metering: EBU Mode metering to supplement EBU R 128 loudness normalisation', https://tech.ebu.ch/docs/tech/tech3341.pdf (its version was not checked against that page for this release). The tighter meter bounds are asserted in tests/ebu3341.rs, as is the published ±0.1 LU. The signals are synthesised from the test-case descriptions, not read from EBU's files; cases 7 and 8 (programme material) and the true-peak cases are not covered."
+  - id: safety:INPUT-VALIDATION
+    version: 1.0.0
+    level: T
+    statement: "Every function rejects NaN and infinite input, silence where a single level is asked for (a zero ratio, an all-zero signal, a signal left with only rounding residue after normalize's high-pass, every loudness block below the absolute gate), negative durations and weights, mismatched lists, buffers that are not whole frames, sample rates below 3364 Hz for loudness, and results that overflow an f64, including a filtered signal or a loudness energy that overflows on the way; Rust returns SafetyError, Python raises ValueError (OverflowError for a negative or too-large integer argument such as a sample rate, TypeError for a non-integer one) and JavaScript throws an Error. The meters return −∞ for a silent window."
+    tests: [vectors/errors.json, tests/properties.rs, src/lib.rs, src/db.rs, src/dose.rs, src/loudness.rs]
+  - id: safety:IMPLEMENTATIONS-AGREE
+    version: 1.0.0
+    level: T
+    statement: "The Rust crate, the Python bindings and the WebAssembly bindings all reproduce every golden vector. Every expected output comes from an independent reference (mpmath, lifesound.py with numpy, scipy, pyloudnorm, or a transcription of BS.1770), never from the Rust output; the error cases in errors.json are the crate's own input rules."
+    tests:
+      - vectors/generate.py
+      - tests/vectors.rs
+      - bindings/python/tests/test_vectors.py
+      - bindings/wasm/tests/vectors.test.mjs
